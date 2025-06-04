@@ -12,6 +12,8 @@ services:
         interval: 10s
         timeout: 5s
         retries: 5
+      networks:
+        - backend
   frontend:
     build:
       context: ./frontend
@@ -29,6 +31,9 @@ services:
       product-service:
         condition: service_healthy
         restart: true
+    networks:
+      - frontend
+      - backend
   product-service:
     build: 
       context: ./services/product-service
@@ -52,6 +57,12 @@ services:
       timeout: 30s
       retries: 5
       start_period: 30s
+    networks:
+      - backend
+
+networks:
+  frontend:
+  backend:
 
 volumes:
   mongodb_data:
