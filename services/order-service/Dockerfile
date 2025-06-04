@@ -17,6 +17,7 @@ RUN npm install --omit=dev
 
 COPY --from=builder /app/src ./src
 COPY --from=builder /app/.env ./
+COPY --from=builder /app/.env.production ./
 COPY --from=builder /app/jest.config.js ./
 COPY --from=builder /app/build-order.yml ./
 
