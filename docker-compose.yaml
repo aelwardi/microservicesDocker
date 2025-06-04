@@ -1,0 +1,39 @@
+version: "3.9"
+services:
+  mongodb:
+      image: mongo:6
+      container_name: mongodb
+      ports:
+        - "27017:27017"
+      volumes:
+        - mongodb_data:/data/db
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: development
+    container_name: frontend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./frontend/.env
+    depends_on:
+      - product-service
+  product-service:
+    build: 
+      context: ./services/product-service
+      dockerfile: Dockerfile
+      target: development
+    container_name: product-service
+    volumes:
+      - ./services/product-service:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongodb
+    env_file:
+      - ./services/product-service/.env
