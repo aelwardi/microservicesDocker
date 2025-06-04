@@ -34,6 +34,31 @@ services:
     networks:
       - frontend
       - backend
+  auth-service:
+    build:
+      context: ./services/auth-service
+      dockerfile: Dockerfile
+      target: development
+    container_name: auth-service
+    volumes:
+      - ./services/auth-service:/app
+      - /app/node_modules
+    ports:
+      - "3001:3001"
+    depends_on:
+      mongodb:
+        condition: service_healthy
+        restart: true
+    env_file:
+      - ./services/auth-service/.env
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3001/api/health"] 
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+    networks:
+      - backend
   product-service:
     build:
       context: ./services/product-service
