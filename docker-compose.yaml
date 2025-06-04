@@ -7,6 +7,11 @@ services:
         - "27017:27017"
       volumes:
         - mongodb_data:/data/db
+      healthcheck:
+        test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
   frontend:
     build:
       context: ./frontend
@@ -21,7 +26,9 @@ services:
     env_file:
       - ./frontend/.env
     depends_on:
-      - product-service
+      product-service:
+        condition: service_healthy
+        restart: true
   product-service:
     build: 
       context: ./services/product-service
@@ -34,6 +41,17 @@ services:
     ports:
       - "3000:3000"
     depends_on:
-      - mongodb
+      mongodb:
+        condition: service_healthy
+        restart: true
     env_file:
       - ./services/product-service/.env
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3000/api/health"] 
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+
+volumes:
+  mongodb_data:
