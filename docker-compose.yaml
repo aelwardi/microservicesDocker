@@ -34,6 +34,9 @@ services:
       product-service:
         condition: service_healthy
         restart: true
+      order-service:
+        condition: service_healthy
+        restart: true
     networks:
       - frontend
       - backend
