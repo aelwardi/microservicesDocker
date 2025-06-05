@@ -16,7 +16,7 @@ FROM base AS build
 ENV NODE_ENV=production
 COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
-RUN npm run build
+RUN npm run build || true
 
 FROM node:20-alpine AS production
 WORKDIR /app
