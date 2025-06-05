@@ -1,25 +1,37 @@
-FROM node:18 AS builder
+FROM node:20-alpine AS builder
 
 WORKDIR /app
 
 COPY package*.json ./
-
-RUN npm install
+RUN npm ci
 
 COPY . .
 
-FROM node:18-slim
+
+FROM node:20-alpine AS development
+
+WORKDIR /app
+
+COPY --from=builder /app /app
+
+EXPOSE 3002
+
+CMD ["npm", "run", "dev"]
+
+FROM node:20-alpine AS production
 
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm install --omit=dev
+RUN npm ci --only=production
+COPY ./src ./src
 
-COPY --from=builder /app/src ./src
-COPY --from=builder /app/.env ./
-COPY --from=builder /app/.env.production ./
-COPY --from=builder /app/jest.config.js ./
-COPY --from=builder /app/build-order.yml ./
+COPY ./jest.config.js ./
+
+RUN addgroup -S riazaka && adduser -S riazaka -G riazaka
+RUN chown -R riazaka:riazaka /app
+
+USER riazaka
 
 EXPOSE 3002
 
