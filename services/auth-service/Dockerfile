@@ -13,7 +13,6 @@ FROM base AS build
 ENV NODE_ENV=production
 RUN npm ci --omit=dev
 COPY . .
-RUN npm run build || true
 
 FROM node:20-alpine AS production
 WORKDIR /app
