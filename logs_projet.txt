@@ -1,4 +1,6 @@
-57e457b 2025-06-06 | Documentation du projet (HEAD -> aelwardi, origin/aelwardi, main) [aelwardi]
+d0f49e2 2025-06-06 | update doc (HEAD -> aelwardi, origin/aelwardi) [aelwardi]
+696fcba 2025-06-06 | added logs_projet.txt for history git [aelwardi]
+57e457b 2025-06-06 | Documentation du projet (main) [aelwardi]
 b52631f 2025-06-06 | finalisation docker compose prod [aelwardi]
 2745940 2025-06-06 | Merge pull request #18 from aelwardi/bakayoko (origin/main, origin/HEAD) [Bakayoko99]
 1bc355e 2025-06-06 | indentation auth service docker-compose [Bakayoko99]
