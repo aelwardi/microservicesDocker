@@ -119,7 +119,6 @@ Cette architecture permet de garantir à la fois robustesse, flexibilité et fac
   cd frontend
 ```
 - ***Création du `Dockerfile` :***
-Crée un fichier `Dockerfile` et copie le contenu suivant :
 
 ```bash
   touch Dockerfile
@@ -165,7 +164,7 @@ Crée un fichier `Dockerfile` et copie le contenu suivant :
 ---
 
 - ***Création du fichier `.dockerignore` :***
-Crée un fichier `.dockerignore` pour éviter de copier des fichiers inutiles dans l'image :
+Fichier `.dockerignore` :
 
 ```bash
   touch .dockerignore
@@ -178,7 +177,7 @@ Crée un fichier `.dockerignore` pour éviter de copier des fichiers inutiles da
 ---
 
 - ***Création des fichiers d’environnement :***
-Crée un fichier `.env` pour le développement :
+Fichier `.env` :
 
 ```bash
   touch .env
@@ -194,7 +193,7 @@ Crée un fichier `.env` pour le développement :
   NODE_ENV=development
 ```
 
-Crée un fichier `.env.production` pour la production :
+Fichier `.env.production` :
 
 ```bash
   touch .env.production
@@ -217,33 +216,21 @@ Crée un fichier `.env.production` pour la production :
 
 ---
 
-***Résumé du process :***
-
-| Étape                | Commande/File                   | Rôle                                                                 |
-|----------------------|---------------------------------|---------------------------------------------------------------------|
-| Aller dans frontend  | `cd frontend`                   | Se placer au bon endroit                                            |
-| Dockerfile           | `touch Dockerfile`              | Définir la construction multi-stage pour dev/prod                   |
-| .dockerignore        | `touch .dockerignore`           | Ignorer les fichiers inutiles dans l'image Docker                   |
-| .env                 | `touch .env`                    | Variables d'environnement pour le développement                     |
-| .env.production      | `touch .env.production`         | Variables d'environnement pour la production                        |
-
----
-
 **Bonnes pratiques appliquées pour la Dockerisation du Frontend :**
-Dans la mise en place de la conteneurisation du frontend, j'ai systématiquement veillé à appliquer les bonnes pratiques suivantes :
+Dans la mise en place de la conteneurisation du frontend, on a systématiquement veillé à appliquer les bonnes pratiques suivantes :
 - ***Utilisation d'un utilisateur non-root en production :***  
-  Dans le Dockerfile, j'ai créé un utilisateur dédié (non-root) pour exécuter l'application en production. Cela permet de réduire les risques de sécurité en cas de compromission du conteneur.
+  Dans le Dockerfile, on a créé un utilisateur dédié (non-root) pour exécuter l'application en production. Cela permet de réduire les risques de sécurité en cas de compromission du conteneur.
 - ***Gestion sécurisée des secrets et variables d’environnement :***
   Les variables d'environnement sont gérées localement, ou injectées lors du déploiement.
 - ***Optimisation des images grâce à `.dockerignore` :***
-  J'ai configuré un fichier `.dockerignore` pour exclure les dossiers et fichiers inutiles (tels que `node_modules` ou `dist`) lors de la construction de l'image Docker, ce qui permet de garder l'image légère et d'éviter d’inclure des fichiers pouvant contenir des informations sensibles.
+  on a configuré un fichier `.dockerignore` pour exclure les dossiers et fichiers inutiles (tels que `node_modules` ou `dist`) lors de la construction de l'image Docker, ce qui permet de garder l'image légère et d'éviter d’inclure des fichiers pouvant contenir des informations sensibles.
 - ***Tests des deux modes de fonctionnement :***
-  J'ai pris soin de tester le projet à la fois en mode développement (`npm run dev`) et en mode production (`node server.cjs`) pour m'assurer du bon fonctionnement dans les deux contextes, et garantir ainsi la fiabilité du processus de build multi-stage.
+  on a pris soin de tester le projet à la fois en mode développement (`npm run dev`) et en mode production (`node server.cjs`) pour nous assurer du bon fonctionnement dans les deux contextes, et garantir ainsi la fiabilité du processus de build multi-stage.
 
 
 ### BackEnd — Préparation et Dockerisation
 
-Pour chacun des microservices backend (`auth-service`, `order-service`, `product-service`), j'ai appliqué une démarche identique de préparation, de configuration et de dockerisation, en veillant à respecter les meilleures pratiques de sécurité, de performance et de maintenabilité.
+Pour chacun des microservices backend (`auth-service`, `order-service`, `product-service`), on a appliqué une démarche identique de préparation, de configuration et de dockerisation, en veillant à respecter les meilleures pratiques de sécurité, de performance et de maintenabilité.
 
 1. **auth-service :**
 - ***Accès au dossier du service :***
@@ -379,7 +366,7 @@ Cela me permet de séparer les variables sensibles et les configurations selon l
   NODE_ENV=production
 ```
 ***Pourquoi ?***  
-J'ai inclus l’URL du product-service pour permettre l'interconnexion des microservices via les variables d’environnement.
+on a inclus l’URL du product-service pour permettre l'interconnexion des microservices via les variables d’environnement.
 
 ---
 
@@ -458,12 +445,12 @@ J'ai inclus l’URL du product-service pour permettre l'interconnexion des micro
 ## Chapitre 3 : Création des images, publication sur Docker Hub et gestion via Docker Compose
 
 ### Création des images, publication sur Docker Hub
-Dans cette étape, j'ai construit les images Docker pour chaque composant de l'application (frontend et microservices), puis je les ai taguées et poussées sur mon dépôt Docker Hub. Voici le détail de chaque étape :
+Dans cette étape, on a construit les images Docker pour chaque composant de l'application (frontend et microservices), puis je les ai taguées et poussées sur mon dépôt Docker Hub. Voici le détail de chaque étape :
 
 ---
 
 1. **Création des images :**
-Pour chaque service, j'ai utilisé la commande `docker build` en spécifiant plusieurs tags : un tag de version (`1.0.1`), un tag de version majeure (`1.0`) et le tag `latest`.  
+Pour chaque service, on a utilisé la commande `docker build` en spécifiant plusieurs tags : un tag de version (`1.0.1`), un tag de version majeure (`1.0`) et le tag `latest`.  
 Cela permet de suivre les évolutions, de revenir facilement à une version précise si besoin, et de toujours disposer d'un tag générique pour le déploiement automatique.
 
 - ***Pour le frontend :***
@@ -518,12 +505,13 @@ Les builds pour les microservices sont similaires, chaque étape étant validée
 Après avoir construit les images Docker pour le frontend et chaque microservice backend, je les ai publiées sur mon espace Docker Hub. Cette étape permet de rendre les images accessibles à toute l'équipe et de faciliter le déploiement sur n’importe quel serveur ou orchestrateur.
 
 - ***FrontEnd :***
-Pour le frontend, j'ai poussé trois tags différents : `1.2.1`, `1.2`, et `latest` pour suivre les versions et permettre un déploiement automatisé avec le tag `latest`.
+Pour le frontend, on a poussé trois tags différents : `1.2.1`, `1.2`, et `latest` pour suivre les versions et permettre un déploiement automatisé avec le tag `latest`.
 ```bash
   docker push aelwardi1/e-commerce-frontend:1.2.1
   docker push aelwardi1/e-commerce-frontend:1.2
   docker push aelwardi1/e-commerce-frontend:latest
 ```
+- ![frontendHub](https://github.com/aelwardi/microservicesDocker/blob/main/demonstration/frontendHub.PNG)
 ***Extrait de sortie :***
 ```
   The push refers to repository [docker.io/aelwardi1/e-commerce-frontend]
@@ -542,6 +530,7 @@ Pour le frontend, j'ai poussé trois tags différents : `1.2.1`, `1.2`, et `la
   docker push aelwardi1/e-commerce-product-service:1.2
   docker push aelwardi1/e-commerce-product-service:latest
 ```
+- ![productHub](https://github.com/aelwardi/microservicesDocker/blob/main/demonstration/productHub.PNG)
 ***Extrait de sortie :***
 ```
   The push refers to repository [docker.io/aelwardi1/e-commerce-product-service]
@@ -555,6 +544,7 @@ Pour le frontend, j'ai poussé trois tags différents : `1.2.1`, `1.2`, et `la
   docker push bakayoko99/e-commerce-auth-service:1.0
   docker push bakayoko99/e-commerce-auth-service:latest
 ```
+- ![authHub](https://github.com/aelwardi/microservicesDocker/blob/main/demonstration/authHub.png)
 ***Extrait de sortie :***
 ```
   The push refers to repository [docker.io/bakayoko99/e-commerce-auth-service]
@@ -569,6 +559,7 @@ Pour le frontend, j'ai poussé trois tags différents : `1.2.1`, `1.2`, et `la
   docker push riazaka/e-commerce-order-service:1.0
   docker push riazaka/e-commerce-order-service:latest
 ```
+- ![orderHub](https://github.com/aelwardi/microservicesDocker/blob/main/demonstration/orderHub.png)
 ***Extrait de sortie :***
 ```
   The push refers to repository [docker.io/riazaka/e-commerce-order-service]
@@ -593,7 +584,7 @@ Pour le frontend, j'ai poussé trois tags différents : `1.2.1`, `1.2`, et `la
 ---
 
 ### Création des fichiers Docker Compose
-Pour orchestrer l'ensemble de l'application, j'ai mis en place deux fichiers `docker-compose` : un pour le développement (`docker-compose.yaml`) et un pour la production (`docker-compose.prod.yaml`).  
+Pour orchestrer l'ensemble de l'application, on a mis en place deux fichiers `docker-compose` : un pour le développement (`docker-compose.yaml`) et un pour la production (`docker-compose.prod.yaml`).  
 Chacun adapte les bonnes pratiques selon l'environnement et permet un déploiement rapide, reproductible et multi-service.
 - ***Fichier docker-compose.yaml (développement local) :***
 Création du fichier :
@@ -881,7 +872,7 @@ Ce fichier est destiné à l’orchestration en production, idéalement avec Doc
 ---
 
 ## Chapitre 4 : Configuration et déploiement par différentes méthodes && Démonstration et validation du fonctionnement de la solution
-Dans ce chapitre, je détaille les différentes méthodes que j'ai utilisées pour configurer et déployer l'application, en commençant par l'environnement de développement basé sur Docker Compose. Cette approche garantit reproductibilité, isolation des services, et rapidité de mise en route.
+Dans ce chapitre, je détaille les différentes méthodes que on a utilisées pour configurer et déployer l'application, en commençant par l'environnement de développement basé sur Docker Compose. Cette approche garantit reproductibilité, isolation des services, et rapidité de mise en route.
 
 ### Développement local avec Docker Compose
 
@@ -966,7 +957,7 @@ Puis retour à la racine du projet :
 ---
 
 2. **Démonstration et validation du fonctionnement de la solution :**
-Pour valider le bon fonctionnement de l'application, j'ai réalisé une démonstration complète du parcours utilisateur, depuis l'inscription jusqu'à la gestion des commandes. Voici les étapes principales, accompagnées des captures d'écran à chaque étape clé.
+Pour valider le bon fonctionnement de l'application, on a réalisé une démonstration complète du parcours utilisateur, depuis l'inscription jusqu'à la gestion des commandes. Voici les étapes principales, accompagnées des captures d'écran à chaque étape clé.
 
 ---
 - ***Accès à l'application :***
@@ -1034,7 +1025,7 @@ Cette démonstration prouve que l'ensemble du parcours utilisateur fonctionne, d
 ### Déploiement en production avec Docker Swarm
 
 1. **Préparation de l'environnement**
-Pour la production, j'ai choisi d'orchestrer l'ensemble des services avec **Docker Swarm**, ce qui permet de bénéficier de la haute disponibilité, de la montée en charge (scalabilité) et d’une gestion centralisée des conteneurs sur plusieurs machines si besoin.
+Pour la production, on a choisi d'orchestrer l'ensemble des services avec **Docker Swarm**, ce qui permet de bénéficier de la haute disponibilité, de la montée en charge (scalabilité) et d’une gestion centralisée des conteneurs sur plusieurs machines si besoin.
 
 ---
 ***Étapes de déploiement sur Swarm :***
@@ -1113,7 +1104,7 @@ Pour la production, j'ai choisi d'orchestrer l'ensemble des services avec **Dock
 Grâce à Docker Swarm, le déploiement en production devient fiable, automatisé et scalable, tout en restant simple à piloter avec quelques commandes.
 
 2. **Démonstration et validation du fonctionnement de la solution :**
-Pour valider le bon fonctionnement de l'application, j'ai réalisé une démonstration complète du parcours utilisateur sur l'interface web, exposée par le frontend déployé sur le cluster Docker Swarm.
+Pour valider le bon fonctionnement de l'application, on a réalisé une démonstration complète du parcours utilisateur sur l'interface web, exposée par le frontend déployé sur le cluster Docker Swarm.
 
 - ***Vérification de l'adresse IP du serveur :***
 ```bash
