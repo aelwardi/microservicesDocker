@@ -16,7 +16,6 @@ FROM base AS build
 ENV NODE_ENV=production
 COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
-RUN npm run build
 
 FROM node:20-alpine AS production
 WORKDIR /app
@@ -24,5 +23,5 @@ ENV NODE_ENV=production
 COPY --from=build /app ./
 RUN addgroup -S griazaka && adduser -S riazaka -G griazaka
 USER riazaka
-EXPOSE 3000
+EXPOSE 3002
 CMD ["node", "src/app.js"]
