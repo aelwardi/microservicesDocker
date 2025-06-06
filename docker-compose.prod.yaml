@@ -29,7 +29,9 @@ services:
     env_file:
       - ./frontend/.env.production
     depends_on:
+      - auth-service
       - product-service
+      - order-service
 
   auth-service:
     image: bakayoko99/e-commerce-auth-service:${IMAGE_TAG:-latest}
